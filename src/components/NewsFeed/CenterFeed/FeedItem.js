@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { likePost } from "../../../actions/PostActions";
+import { posts } from "../../../urls";
 import Comments from "./Comments";
 import faker from "faker";
 
@@ -27,7 +29,7 @@ class FeedItem extends Component {
 
   render() {
     return (
-      <div className="ui raised link fluid card">
+      <Link to={`${posts}/id`} className="ui raised link fluid card">
         <div className="content">
           <div className="right floated meta date">
             <i class="clock icon" /> 4 days ago
@@ -84,7 +86,7 @@ class FeedItem extends Component {
           </span>
         </div>
         {this.renderComments(this.props.post.comments, this.props.post.id)}
-      </div>
+      </Link>
     );
   }
 }

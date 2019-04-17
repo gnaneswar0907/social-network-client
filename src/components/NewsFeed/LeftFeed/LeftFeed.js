@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 
+import { userpage, home, messages, requests, findfriends } from "../../../urls";
 import SingleItem from "./SingleItem";
 
 export default class LeftFeed extends Component {
   render() {
     return (
       <div className="ui middle aligned  selection right floated list ">
-        <SingleItem content="User Profile" link="/user/2" />
-        <SingleItem content="News Feed" link="/home" />
-        <SingleItem content="Messages" link="/user/messages" />
-        <SingleItem content="Find Friends" link="/home/findfriends" />
-        <SingleItem content="Requests" link="/home/friendRequests" />
+        <SingleItem content="User Profile" link={`${userpage}/id`} />
+        <SingleItem content="News Feed" link={home} />
+        <SingleItem content="Messages" link={messages} />
+        <SingleItem content="Find Friends" link={findfriends} />
+        <SingleItem content="Requests" link={requests} />
 
         <div className="item" style={{ marginTop: "20px" }}>
           <div className="grey basic content header">Explore</div>

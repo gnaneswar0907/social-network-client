@@ -11,9 +11,41 @@ export const userLogin = formValues => {
 
 export const userCreate = formValues => {
   return async (dispatch, getState) => {
-    const response = await website.post("/users", { ...formValues });
-    dispatch({ type: "CREATE_USER", payload: response.data });
-    history.push("/");
+    const response = await website
+      .post("/api/users/signup", formValues)
+      .catch(error => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          history.push({
+            pathname: "/error",
+            state: {
+              msg: error.response.data.error,
+              title: "Signup Error"
+            }
+          });
+        } else if (error.request) {
+          console.log(error.request);
+          history.push({
+            pathname: "/error",
+            state: {
+              msg: "Server Error. Please try after some time!!!",
+              title: "Signup Error"
+            }
+          });
+        } else {
+          console.log("Error", error.message);
+          history.push({
+            pathname: "/error",
+            state: {
+              msg: error.message,
+              title: "Signup Error"
+            }
+          });
+        }
+        //console.log(error.config);
+      });
   };
 };
 

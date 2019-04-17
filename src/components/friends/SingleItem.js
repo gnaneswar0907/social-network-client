@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import { userpage } from "../../urls";
 import faker from "faker";
 
 export default class SingleItem extends Component {
@@ -36,7 +37,7 @@ export default class SingleItem extends Component {
           <div className="ui dimmer">
             <div className="content">
               <div className="center">
-                <Link to={`/user/id`} className="ui inverted button">
+                <Link to={`${userpage}/id`} className="ui inverted button">
                   View Profile
                 </Link>
               </div>

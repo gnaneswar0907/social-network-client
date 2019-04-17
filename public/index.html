@@ -31,9 +31,14 @@
         $(".ui.items .image").dimmer({ on: "hover" });
 
         $(".ui.segments .image").dimmer({ on: "hover" });
+
+        $("#home .ui.dropdown").dropdown();
+
+        $(".ui.grid .ui.dropdown").dropdown();
+
         $("#home .ui.search").search({
           apiSettings: {
-            url: "//api.github.com/search/repositories?q={query}"
+            url: "//api.github.com/search/{filter}?q={query}"
           },
           fields: {
             results: "items",
@@ -44,7 +49,7 @@
         });
         $(".ui.grid .ui.search").search({
           apiSettings: {
-            url: "//api.github.com/search/repositories?q={query}"
+            url: "//api.github.com/search/{filter}?q={query}"
           },
           fields: {
             results: "items",

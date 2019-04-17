@@ -20,7 +20,7 @@ class HomeFeed extends Component {
   render() {
     return (
       <div id="home">
-        <FeedNavbar />
+        <FeedNavbar searchfilter="users" />
         <div className="ui grid container" style={{ marginTop: "10px" }}>
           <div className="two wide column">
             <div style={{ position: "fixed" }}>

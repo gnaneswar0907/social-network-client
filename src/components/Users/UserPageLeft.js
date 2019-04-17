@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import faker from "faker";
+import { findfriends, userpage } from "../../urls";
 import "./Overlay.css";
 
 export default class UserPageLeft extends Component {
@@ -103,7 +104,7 @@ export default class UserPageLeft extends Component {
         <div className="ui overlay">
           <div className="ui fluid card">
             <div className="content">
-              <Link to={`/home/findfriends`} className="right floated meta">
+              <Link to={findfriends} className="right floated meta">
                 Find Friends
               </Link>
               <div className="header">
@@ -112,37 +113,37 @@ export default class UserPageLeft extends Component {
             </div>
             <div className="content">
               <div className="ui three fluid cards">
-                <Link to={`/user/id`} className="card">
+                <Link to={`${userpage}/id`} className="card">
                   <div className="image">
                     <img alt="friendPhoto" src={faker.image.avatar()} />
                   </div>
                   <div className="extra">{faker.name.firstName()}</div>
                 </Link>
-                <Link to={`/user/id`} className="card">
+                <Link to={`${userpage}/id`} className="card">
                   <div className="image">
                     <img alt="friendPhoto" src={faker.image.avatar()} />
                   </div>
                   <div className="extra">{faker.name.firstName()}</div>
                 </Link>
-                <Link to={`/user/id`} className="card">
+                <Link to={`${userpage}/id`} className="card">
                   <div className="image">
                     <img alt="friendPhoto" src={faker.image.avatar()} />
                   </div>
                   <div className="extra">{faker.name.firstName()}</div>
                 </Link>
-                <Link to={`/user/id`} className="card">
+                <Link to={`${userpage}/id`} className="card">
                   <div className="image">
                     <img alt="friendPhoto" src={faker.image.avatar()} />
                   </div>
                   <div className="extra">{faker.name.firstName()}</div>
                 </Link>
-                <Link to={`/user/id`} className="card">
+                <Link to={`${userpage}/id`} className="card">
                   <div className="image">
                     <img alt="friendPhoto" src={faker.image.avatar()} />
                   </div>
                   <div className="extra">{faker.name.firstName()}</div>
                 </Link>
-                <Link to={`/user/id`} className="card">
+                <Link to={`${userpage}/id`} className="card">
                   <div className="image">
                     <img alt="friendPhoto" src={faker.image.avatar()} />
                   </div>

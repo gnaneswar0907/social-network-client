@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Modal from "../Modal";
@@ -88,9 +87,9 @@ class UserDpModal extends React.Component {
       <button onClick={this.dpUpdate} className="ui positive button">
         Update
       </button>
-      <Link to="/user/2" className="ui negative button">
+      <button onClick={() => history.go(-1)} className="ui negative button">
         Cancel
-      </Link>
+      </button>
     </React.Fragment>
   );
 
@@ -98,7 +97,7 @@ class UserDpModal extends React.Component {
     return (
       <div>
         <Modal
-          onDismiss={() => history.push("/user/2")}
+          onDismiss={() => history.go(-1)}
           title="Update Profile Photo"
           content={this.renderContent()}
           actions={this.renderActions}

@@ -2,13 +2,30 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import faker from "faker";
+import history from "../../history";
+import { profilephoto } from "../../urls";
 import UserPageMenu from "./UserPageMenu";
 import "./Overlay.css";
 
 export default class UserHeader extends Component {
+  renderMenu = () => {
+    if (this.props.button === "updateform") {
+      return (
+        <div className="ui right aligned segment">
+          <div onClick={() => history.go(-1)} className="ui negative button">
+            Go Back
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="ui overlay">
+          <UserPageMenu />
+        </div>
+      );
+    }
+  };
   render() {
-    const buttonLink =
-      this.props.buttonColor === "positive" ? "/user/edit/2" : "/user/2";
     const renderDP = () => {
       if (faker.image.image()) {
         return <img src={faker.image.image()} alt="profilephoto" />;
@@ -21,16 +38,14 @@ export default class UserHeader extends Component {
         <div className="ui inverted black segment">
           <div className="ui small circular image" id="dp">
             <div className="ui dimmer">
-              <Link className="ui inverted button" to={`/user/id/dp/`}>
+              <Link className="ui inverted button" to={profilephoto}>
                 Update Photo
               </Link>
             </div>
             {renderDP()}
           </div>
         </div>
-        <div className="ui overlay">
-          <UserPageMenu />
-        </div>
+        {this.renderMenu()}
       </div>
     );
   }

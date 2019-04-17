@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { CirclePicker } from "react-color";
 
 import faker from "faker";
+import { userpage } from "../../../urls";
 import { changeColor } from "../../../actions/MessagesActions";
 
 class RightTab extends Component {
@@ -65,7 +66,7 @@ class RightTab extends Component {
             </a>
           </div>
           {this.rednerColorPicker()}
-          <Link to="/user" className="item">
+          <Link to={`${userpage}/id`} className="item">
             <div className="middle aligned content">
               <i className="large search spaced icon" />
               View Profile

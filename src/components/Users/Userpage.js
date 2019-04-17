@@ -10,7 +10,7 @@ export default class Userpage extends Component {
     return (
       <div className="ui grid">
         <div className="row">
-          <FeedNavbar />
+          <FeedNavbar searchfilter="posts" />
         </div>
         <div style={{ marginTop: "42px" }} className="ui container">
           <UserHeader buttonAction="Update Info" buttonColor="positive" />

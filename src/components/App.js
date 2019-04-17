@@ -1,6 +1,21 @@
 import React, { Component } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 
+import {
+  home,
+  signup,
+  userpage,
+  messages,
+  findfriends,
+  requests,
+  profilephoto,
+  error,
+  posts,
+  about,
+  userPhotos,
+  userFriends,
+  userUpdate
+} from "../urls";
 import EntryPage from "./EntryPage";
 import HomeFeed from "./NewsFeed/HomeFeed";
 import history from "../history";
@@ -11,6 +26,7 @@ import UserDpModal from "./Users/UserDpModal";
 import Messages from "./Messages/Messages";
 import FindFriends from "./friends/FindFriends";
 import FriendRequests from "./friends/FriendRequests";
+import ErrorModal from "./ErrorModal";
 
 class App extends Component {
   render() {
@@ -18,19 +34,16 @@ class App extends Component {
       <div id="app">
         <Router history={history}>
           <Switch>
-            <Route path="/" exact component={EntryPage} />
-            <Route path="/home" exact component={HomeFeed} />
-            <Route path="/user/messages" exact component={Messages} />
-            <Route path="/home/findfriends" exact component={FindFriends} />
-            <Route
-              path="/home/friendRequests"
-              exact
-              component={FriendRequests}
-            />
-            <Route path="/home/posts/:id" exact component={SinglePost} />
-            <Route path="/user/:id" exact component={Userpage} />
-            <Route path="/user/edit/:id" exact component={UserUpdate} />
-            <Route path="/user/id/dp" exact component={UserDpModal} />
+            <Route path={signup} exact component={EntryPage} />
+            <Route path={home} exact component={HomeFeed} />
+            <Route path={messages} exact component={Messages} />
+            <Route path={findfriends} exact component={FindFriends} />
+            <Route path={requests} exact component={FriendRequests} />
+            <Route path={error} exact component={ErrorModal} />
+            <Route path={`${posts}/:id`} exact component={SinglePost} />
+            <Route path={userpage} exact component={Userpage} />
+            <Route path={userUpdate} exact component={UserUpdate} />
+            <Route path={profilephoto} exact component={UserDpModal} />
           </Switch>
         </Router>
       </div>

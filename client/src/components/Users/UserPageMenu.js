@@ -6,7 +6,7 @@ import { about, userUpdate, userPhotos, userFriends } from "../../urls";
 export default class UserPageMenu extends Component {
   render() {
     return (
-      <div className="ui four item grey inverted secondary menu">
+      <div className="ui four item grey inverted secondary tabular menu">
         <Link to={about} className="vertically fitted item">
           <div style={{ color: "#ffffff" }} className="ui header">
             About

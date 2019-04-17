@@ -27,7 +27,9 @@ import Messages from "./Messages/Messages";
 import FindFriends from "./friends/FindFriends";
 import FriendRequests from "./friends/FriendRequests";
 import ErrorModal from "./ErrorModal";
-import Friends from "./Users/Friends";
+import UserFriends from "./Users/UserFriends/UserFriends";
+import UserAbout from "./Users/about/UserAbout";
+import UserPhotos from "./Users/UserPhotos/UserPhotos";
 
 class App extends Component {
   render() {
@@ -38,13 +40,15 @@ class App extends Component {
             <Route path={signup} exact component={EntryPage} />
             <Route path={home} exact component={HomeFeed} />
             <Route path={messages} exact component={Messages} />
-            <Route path={userFriends} exact component={Friends} />
+            <Route path={about} exact component={UserAbout} />
+            <Route path={userFriends} exact component={UserFriends} />
+            <Route path={userPhotos} exact component={UserPhotos} />
+            <Route path={userUpdate} exact component={UserUpdate} />
             <Route path={findfriends} exact component={FindFriends} />
             <Route path={requests} exact component={FriendRequests} />
             <Route path={error} exact component={ErrorModal} />
             <Route path={`${posts}/:id`} exact component={SinglePost} />
-            <Route path={userpage} exact component={Userpage} />
-            <Route path={userUpdate} exact component={UserUpdate} />
+            <Route path={`${userpage}/:id`} exact component={Userpage} />
             <Route path={profilephoto} exact component={UserDpModal} />
           </Switch>
         </Router>

@@ -30,7 +30,7 @@ export default class FeedNavbar extends Component {
           className="vertically fitted  item"
           style={{ marginLeft: "150px" }}
         >
-          <Link to={userpage} className="ui blue label">
+          <Link to={`${userpage}/id`} className="ui blue label">
             <img
               className="ui avatar image"
               src={faker.image.avatar()}

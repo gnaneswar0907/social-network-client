@@ -4,8 +4,28 @@ import UserHeader from "./UserHeader";
 import UserContent from "./UserContent";
 import FeedNavbar from "../NewsFeed/FeedNavbar";
 import UserPageLeft from "./UserPageLeft";
+import UserAbout from "./about/UserAbout";
+import UserPhotos from "./UserPhotos/UserPhotos";
+import UserFriends from "./UserFriends/UserFriends";
+import UserUpdate from "./UserUpdate";
 
 export default class Userpage extends Component {
+  state = { content: "" };
+
+  renderContent = () => {
+    if (this.state.content === "about") {
+      return <UserAbout />;
+    } else if (this.state.content === "photos") {
+      return <UserPhotos />;
+    } else if (this.state.content === "friends") {
+      return <UserFriends />;
+    } else if (this.state.content === "update") {
+      return <UserUpdate />;
+    } else {
+      return <UserContent />;
+    }
+  };
+
   render() {
     return (
       <div className="ui grid">
@@ -20,9 +40,7 @@ export default class Userpage extends Component {
                 <UserPageLeft />
               </div>
             </div>
-            <div className="ten wide column">
-              <UserContent />
-            </div>
+            <div className="ten wide column">{this.renderContent()}</div>
           </div>
         </div>
       </div>

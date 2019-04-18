@@ -5,6 +5,8 @@ import UsersReducer from "./UsersReducer";
 import MessageReducer from "./MessageReducer";
 import PostsReducer from "./PostsReducer";
 
+//------Changing Messages Color-------------
+
 const changedColor = (color = "blue", action) => {
   if (action.type === "CHANGE_COLOR") {
     return action.payload;

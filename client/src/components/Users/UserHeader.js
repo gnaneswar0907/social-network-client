@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import faker from "faker";
 import history from "../../history";
-import { profilephoto } from "../../urls";
+import { profilephoto, userpage } from "../../urls";
 import UserPageMenu from "./UserPageMenu";
 import "./Overlay.css";
 
@@ -11,8 +11,11 @@ export default class UserHeader extends Component {
   renderMenu = () => {
     if (this.props.button === "updateform") {
       return (
-        <div className="ui right aligned segment">
-          <div onClick={() => history.go(-1)} className="ui negative button">
+        <div className="ui right aligned tertiary segment">
+          <div
+            onClick={() => history.push(`${userpage}/id`)}
+            className="ui negative button"
+          >
             Go Back
           </div>
         </div>

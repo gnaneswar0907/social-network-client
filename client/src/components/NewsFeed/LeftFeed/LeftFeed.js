@@ -12,14 +12,6 @@ export default class LeftFeed extends Component {
         <SingleItem content="Messages" link={messages} />
         <SingleItem content="Find Friends" link={findfriends} />
         <SingleItem content="Requests" link={requests} />
-
-        <div className="item" style={{ marginTop: "20px" }}>
-          <div className="grey basic content header">Explore</div>
-        </div>
-        <SingleItem content="Pages" />
-        <SingleItem content="Groups" />
-        <SingleItem content="Events" />
-        <SingleItem content="Market Place" />
       </div>
     );
   }

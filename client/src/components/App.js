@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Router, Route, Switch } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 import {
   home,
@@ -16,6 +17,9 @@ import {
   userFriends,
   userUpdate
 } from "../urls";
+import setAuthToken from "./Authentication/setAuthToken";
+import store from "../store";
+import PrivateRoute from "../PrivateRoute";
 import EntryPage from "./EntryPage";
 import HomeFeed from "./NewsFeed/HomeFeed";
 import history from "../history";
@@ -30,6 +34,20 @@ import ErrorModal from "./ErrorModal";
 import UserFriends from "./Users/UserFriends/UserFriends";
 import UserAbout from "./Users/about/UserAbout";
 import UserPhotos from "./Users/UserPhotos/UserPhotos";
+import { logoutUser } from "../actions/UserActions";
+
+if (localStorage.jwtToken) {
+  setAuthToken(localStorage.jwtToken);
+  const decoded = jwt_decode(localStorage.jwtToken);
+  store.dispatch({ type: "SET_CURRENT_USER", payload: decoded });
+
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    store.dispatch(logoutUser());
+
+    history.push("/signup");
+  }
+}
 
 class App extends Component {
   render() {
@@ -38,18 +56,18 @@ class App extends Component {
         <Router history={history}>
           <Switch>
             <Route path={signup} exact component={EntryPage} />
-            <Route path={home} exact component={HomeFeed} />
-            <Route path={messages} exact component={Messages} />
-            <Route path={about} exact component={UserAbout} />
-            <Route path={userFriends} exact component={UserFriends} />
-            <Route path={userPhotos} exact component={UserPhotos} />
-            <Route path={userUpdate} exact component={UserUpdate} />
-            <Route path={findfriends} exact component={FindFriends} />
-            <Route path={requests} exact component={FriendRequests} />
             <Route path={error} exact component={ErrorModal} />
-            <Route path={`${posts}/:id`} exact component={SinglePost} />
-            <Route path={`${userpage}/:id`} exact component={Userpage} />
-            <Route path={profilephoto} exact component={UserDpModal} />
+            <PrivateRoute path={home} exact component={HomeFeed} />
+            <PrivateRoute path={messages} exact component={Messages} />
+            <PrivateRoute path={about} exact component={UserAbout} />
+            <PrivateRoute path={userFriends} exact component={UserFriends} />
+            <PrivateRoute path={userPhotos} exact component={UserPhotos} />
+            <PrivateRoute path={userUpdate} exact component={UserUpdate} />
+            <PrivateRoute path={findfriends} exact component={FindFriends} />
+            <PrivateRoute path={requests} exact component={FriendRequests} />
+            <PrivateRoute path={`${posts}/:id`} exact component={SinglePost} />
+            <PrivateRoute path={`${userpage}/:id`} exact component={Userpage} />
+            <PrivateRoute path={profilephoto} exact component={UserDpModal} />
           </Switch>
         </Router>
       </div>

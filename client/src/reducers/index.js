@@ -4,6 +4,7 @@ import { reducer } from "redux-form";
 import UsersReducer from "./UsersReducer";
 import MessageReducer from "./MessageReducer";
 import PostsReducer from "./PostsReducer";
+import AuthReducer from "./AuthReducer";
 
 //------Changing Messages Color-------------
 
@@ -16,6 +17,7 @@ const changedColor = (color = "blue", action) => {
 
 export default combineReducers({
   form: reducer,
+  auth: AuthReducer,
   posts: PostsReducer,
   users: UsersReducer,
   messages: MessageReducer,

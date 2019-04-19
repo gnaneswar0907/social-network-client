@@ -9,7 +9,6 @@ class ErrorModal extends React.Component {
       return (
         <div style={{ textAlign: "center" }} className="ui  negative message">
           <div className="header">
-            Your user registration was not successful.
             <p>{this.props.location.state.msg}</p>
           </div>
         </div>

@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
+import { logoutUser } from "../../actions/UserActions";
 import faker from "faker";
 import { home, userpage } from "../../urls";
 import SearchBar from "./SearchBar";
 
-export default class FeedNavbar extends Component {
+class FeedNavbar extends Component {
   render() {
     if (this.props.searchfilter === "users") {
       this.filter = "users";
@@ -45,7 +47,11 @@ export default class FeedNavbar extends Component {
           </Link>
         </div>
         <div className="vertically fitted  item" style={{ marginLeft: "80px" }}>
-          <div className="ui blue label">
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => this.props.logoutUser()}
+            className="ui blue label"
+          >
             Log out <i className="log out icon" />
           </div>
         </div>
@@ -53,3 +59,8 @@ export default class FeedNavbar extends Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { logoutUser }
+)(FeedNavbar);

@@ -49,7 +49,6 @@ class Login extends Component {
   };
 
   onSubmit = formValues => {
-    console.log(formValues);
     this.props.userLogin(formValues);
   };
 
@@ -64,7 +63,7 @@ class Login extends Component {
             id="username"
             name="email"
             type="text"
-            label="Username"
+            label="email"
             component={this.renderInput}
           />
 
@@ -99,10 +98,6 @@ const redForm = reduxForm({
   form: "LoginForm",
   validate: validate
 })(Login);
-
-const mapToProps = state => {
-  return {};
-};
 
 export default connect(
   null,

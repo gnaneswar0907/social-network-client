@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 
 import {
   home,
+  success,
   signup,
   userpage,
   messages,
@@ -35,6 +36,7 @@ import UserFriends from "./Users/UserFriends/UserFriends";
 import UserAbout from "./Users/about/UserAbout";
 import UserPhotos from "./Users/UserPhotos/UserPhotos";
 import { logoutUser } from "../actions/UserActions";
+import SuccessModal from "./SuccessModal";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -57,6 +59,7 @@ class App extends Component {
           <Switch>
             <Route path={signup} exact component={EntryPage} />
             <Route path={error} exact component={ErrorModal} />
+            <Route path={success} exact component={SuccessModal} />
             <PrivateRoute path={home} exact component={HomeFeed} />
             <PrivateRoute path={messages} exact component={Messages} />
             <PrivateRoute path={about} exact component={UserAbout} />

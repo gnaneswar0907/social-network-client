@@ -8,10 +8,17 @@ import setAuthToken from "../components/Authentication/setAuthToken";
 
 export const userCreate = formValues => {
   return async dispatch => {
-    await server.post("/users/signup", formValues).catch(error => {
-      serverErrorDisplay(error, "SignUp Error");
-    });
-    history.push("/signup");
+    const response = await server
+      .post("/users/signup", formValues)
+      .catch(error => {
+        serverErrorDisplay(error, "SignUp Error");
+      });
+    if (response) {
+      successModalDisplay(
+        "Your profile has been successfully created. Now you can Login.",
+        "Sign Up Success!!!!!!"
+      );
+    }
   };
 };
 
@@ -93,6 +100,16 @@ export const addFiend = (userid, friendId) => {
     dispatch({ type: "SEND_REQUEST", payload: response.data });
     history.push("/home/findfriends");
   };
+};
+
+const successModalDisplay = (message, title) => {
+  history.push({
+    pathname: "/success",
+    state: {
+      msg: message,
+      title: title
+    }
+  });
 };
 
 const serverErrorDisplay = (error, title) => {

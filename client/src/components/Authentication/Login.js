@@ -68,7 +68,7 @@ class Login extends Component {
           />
 
           <Field
-            id="password"
+            id="loginpassword"
             name="password"
             type="password"
             label="Password"

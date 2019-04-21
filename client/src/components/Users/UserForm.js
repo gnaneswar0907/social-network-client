@@ -1,8 +1,9 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, FieldArray } from "redux-form";
 import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css";
+import _ from "lodash";
 
 import { userDetail, userUpdate } from "../../actions/UserActions";
 
@@ -24,8 +25,54 @@ class UserFrom extends React.Component {
     }
   };
 
+  // addSchool = fields => {
+  //   if (fields.length == this.state.schools) {
+  //     return (
+  //       <i
+  //         onClick={() => {
+  //           this.setState({ schools: this.state.schools + 1 });
+  //         }}
+  //         style={{
+  //           marginLeft: "10px",
+  //           marginTop: "5px"
+  //         }}
+  //         className="large plus icon"
+  //       />
+  //     );
+  //   } else {
+  //     return;
+  //   }
+  // };
+
+  renderSchools = ({ fields }) => {
+    return (
+      <div style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+        {fields.map((school, index) => (
+          <React.Fragment key={index}>
+            <Field
+              id={`school ${index + 1}`}
+              name={`${school}.${index + 1}`}
+              type="text"
+              component={this.renderInput}
+              label={`School ${index + 1}`}
+            />
+          </React.Fragment>
+        ))}
+        <div
+          className="ui labeled icon primary button"
+          onClick={() => {
+            fields.push({});
+          }}
+        >
+          <i className="plus icon" />
+          Add School
+        </div>
+      </div>
+    );
+  };
+
   renderInput = ({ input, label, position, id, type, meta }) => {
-    const classname = `field ${meta.error && meta.touched ? "error" : ""}`;
+    //const classname = `field ${meta.error && meta.touched ? "error" : ""}`;
     if (meta.touched && meta.error) {
       return (
         <div
@@ -34,7 +81,7 @@ class UserFrom extends React.Component {
           data-tooltip={meta.error}
           data-inverted=""
           data-position={position}
-          className={classname}
+          className="field error"
         >
           <div className="ui labeled input">
             <label className="ui blue label" htmlFor={id}>
@@ -42,14 +89,13 @@ class UserFrom extends React.Component {
             </label>
             <input id={id} {...input} type={type} placeholder={label} />
           </div>
-
           {/* <span className="ui inverted popup">{meta.error}</span> */}
           {/* {this.renderErrors(meta)} */}
         </div>
       );
     } else {
       return (
-        <div style={{ paddingTop: "20px" }} className={classname}>
+        <div style={{ paddingTop: "20px" }} className="field">
           <div className="ui labeled input">
             <label className="ui blue label" htmlFor={id}>
               {label}
@@ -186,14 +232,6 @@ class UserFrom extends React.Component {
               />
             </div>
           </div>
-          <Field
-            id="school"
-            name="school"
-            label="School"
-            type="text"
-            position="left center"
-            component={this.renderInput}
-          />
 
           <div style={{ paddingTop: "20px" }} className="field">
             <div className="ui labeled input">
@@ -239,6 +277,8 @@ class UserFrom extends React.Component {
           position="right center"
           component={this.renderInput}
         />
+
+        <FieldArray name="schools" component={this.renderSchools} />
 
         <button
           style={{ marginTop: "20px" }}

@@ -13,7 +13,7 @@ class MainFeed extends Component {
   state = { hideComments: true, likecolor: "" };
 
   componentDidMount() {
-    //this.props.getPosts(userid);
+    //this.props.getPosts(this.props.userid);
   }
 
   onLiked = (userid, postid) => {
@@ -243,8 +243,9 @@ class MainFeed extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
+    userid: state.auth.user.id,
     posts: state.posts
   };
 };

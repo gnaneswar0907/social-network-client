@@ -33,13 +33,16 @@ class FeedItem extends Component {
         <div className="content">
           <div className="right floated meta date">
             <i class="clock icon" /> 4 days ago
+            {/* {this.props.post.time} */}
           </div>
           <div className="author">
             <img className="left floated avatar" src={faker.image.avatar()} />
             <a className="user" style={{ paddingLeft: "5px" }}>
               Helen Troy
+              {/* {this.props.post.username} */}
             </a>{" "}
             added 3 new illustrations
+            {/* {this.props.post.heading} */}
           </div>
           <div className="meta">
             <i className="icon users" style={{ paddingLeft: "5px" }} />
@@ -74,6 +77,7 @@ class FeedItem extends Component {
               className={`${this.state.color} heart like icon`}
             />
             17 likes
+            {/* {this.props.post.likes} */}
           </span>
           <span
             onClick={() => {
@@ -83,6 +87,7 @@ class FeedItem extends Component {
             }}
           >
             <i className="comment icon" />3 comments
+            {/* {this.props.post.comments} */}
           </span>
         </div>
         {this.renderComments(this.props.post.comments, this.props.post.id)}

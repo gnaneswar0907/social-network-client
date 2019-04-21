@@ -33,7 +33,7 @@ class RightTab extends Component {
     ];
     if (this.state.showColorPicker) {
       return (
-        <div style={{ marginLeft: "150px" }} className="item">
+        <div style={{ marginLeft: "100px" }} className="item">
           <div className="center aligned content">
             <CirclePicker
               colors={colors}

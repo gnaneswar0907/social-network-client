@@ -13,9 +13,9 @@ export const createPost = formValues => {
 
 //-------- Get Posts ------------
 
-export const getPosts = () => {
+export const getPosts = userid => {
   return async dispatch => {
-    const response = await website.get("/posts");
+    const response = await website.get(`/posts/${userid}`);
     dispatch({ type: "GET_POSTS", payload: response.data });
   };
 };

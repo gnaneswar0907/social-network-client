@@ -16,6 +16,7 @@ import {
   about,
   userPhotos,
   userFriends,
+  passwordChange,
   userUpdate
 } from "../urls";
 import setAuthToken from "./Authentication/setAuthToken";
@@ -37,6 +38,7 @@ import UserAbout from "./Users/about/UserAbout";
 import UserPhotos from "./Users/UserPhotos/UserPhotos";
 import { logoutUser } from "../actions/UserActions";
 import SuccessModal from "./SuccessModal";
+import PasswordChangeModal from "./Users/PasswordChangeModal";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -67,10 +69,15 @@ class App extends Component {
             <PrivateRoute path={userPhotos} exact component={UserPhotos} />
             <PrivateRoute path={userUpdate} exact component={UserUpdate} />
             <PrivateRoute path={findfriends} exact component={FindFriends} />
+            <PrivateRoute path={profilephoto} exact component={UserDpModal} />
+            <PrivateRoute
+              path={passwordChange}
+              exact
+              component={PasswordChangeModal}
+            />
             <PrivateRoute path={requests} exact component={FriendRequests} />
             <PrivateRoute path={`${posts}/:id`} exact component={SinglePost} />
             <PrivateRoute path={`${userpage}/:id`} exact component={Userpage} />
-            <PrivateRoute path={profilephoto} exact component={UserDpModal} />
           </Switch>
         </Router>
       </div>

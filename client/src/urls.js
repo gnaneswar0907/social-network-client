@@ -12,3 +12,4 @@ export const userUpdate = "/user/update";
 export const error = "/error";
 export const posts = "/posts";
 export const success = "/success";
+export const passwordChange = "/user/changepassword";

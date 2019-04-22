@@ -23,7 +23,7 @@ class Entrypage extends React.Component {
         </div>
         <div className="two column row">
           <Signup />
-          <div>
+          <div className="six wide column">
             <h1 className="large header">Sign Up !!</h1>
             <p className="sub header" style={{ marginBottom: "40px" }}>
               It is free and always will be.

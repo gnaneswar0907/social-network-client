@@ -20,7 +20,7 @@
     <script>
       $(document).ready(function() {
         $("#formpop").popup();
-        $(".ui.form .ui.dropdown").dropdown({ maxSelections: 4 });
+
         setInterval(changes, 100);
         setInterval(setOffset, 2000);
 
@@ -29,6 +29,10 @@
 
       function changes() {
         $(".ui.items .image").dimmer({ on: "hover" });
+
+        $(".ui.form .ui.dropdown").dropdown({
+          maxSelections: 4
+        });
 
         $(".ui.segments .image").dimmer({ on: "hover" });
 

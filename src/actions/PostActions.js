@@ -5,17 +5,26 @@ import history from "../history";
 
 export const createPost = formValues => {
   return async dispatch => {
-    const response = await website.post("/posts", { ...formValues });
+    await website.post("/posts", formValues);
+    const response = await website.get(`/posts`);
     dispatch({ type: "CREATE_POST", payload: response.data });
-    history.push("/home");
   };
 };
 
-//-------- Get Posts ------------
+//-------- Get User Posts ------------
+
+export const getUserPosts = () => {
+  return async dispatch => {
+    const response = await website.get(`/posts`);
+    dispatch({ type: "GET_USER_POSTS", payload: response.data });
+  };
+};
+
+//-------Get News Feed Posts
 
 export const getPosts = () => {
   return async dispatch => {
-    const response = await website.get("/posts");
+    const response = await website.get(`/posts`);
     dispatch({ type: "GET_POSTS", payload: response.data });
   };
 };

@@ -12,7 +12,7 @@ class SearchBar extends React.Component {
             }}
             className="item"
           >
-            <i class="olive circle icon" />
+            <i className="olive circle icon" />
             school
           </div>
           <div
@@ -21,7 +21,7 @@ class SearchBar extends React.Component {
             }}
             className="item"
           >
-            <i class="violet circle icon" />
+            <i className="violet circle icon" />
             hobbies
           </div>
           <div
@@ -30,7 +30,7 @@ class SearchBar extends React.Component {
             }}
             className="item"
           >
-            <i class="orange circle icon" />
+            <i className="orange circle icon" />
             place
           </div>
         </React.Fragment>
@@ -44,7 +44,7 @@ class SearchBar extends React.Component {
             }}
             className="item"
           >
-            <i class="olive circle icon" />
+            <i className="olive circle icon" />
             Most Recent
           </div>
           <div
@@ -53,7 +53,7 @@ class SearchBar extends React.Component {
             }}
             className="item"
           >
-            <i class="violet circle icon" />
+            <i className="violet circle icon" />
             Most Liked
           </div>
           <div
@@ -62,7 +62,7 @@ class SearchBar extends React.Component {
             }}
             className="item"
           >
-            <i class="orange circle icon" />
+            <i className="orange circle icon" />
             Most Commented
           </div>
         </React.Fragment>

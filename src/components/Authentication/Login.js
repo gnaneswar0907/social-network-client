@@ -49,7 +49,6 @@ class Login extends Component {
   };
 
   onSubmit = formValues => {
-    console.log(formValues);
     this.props.userLogin(formValues);
   };
 
@@ -62,14 +61,14 @@ class Login extends Component {
         <div className="inline fields">
           <Field
             id="username"
-            name="username"
+            name="email"
             type="text"
-            label="Username"
+            label="email"
             component={this.renderInput}
           />
 
           <Field
-            id="password"
+            id="loginpassword"
             name="password"
             type="password"
             label="Password"
@@ -85,8 +84,8 @@ class Login extends Component {
 
 const validate = formValues => {
   const errors = {};
-  if (!formValues.username) {
-    errors.username = "Enter a user name";
+  if (!formValues.email) {
+    errors.email = "Enter a user name";
   }
   if (!formValues.password) {
     errors.password = "Enter a password";
@@ -99,10 +98,6 @@ const redForm = reduxForm({
   form: "LoginForm",
   validate: validate
 })(Login);
-
-const mapToProps = state => {
-  return {};
-};
 
 export default connect(
   null,

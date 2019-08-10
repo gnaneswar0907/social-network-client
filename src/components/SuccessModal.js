@@ -1,13 +1,13 @@
-import React from "react";
+import React, { Component } from "react";
 
 import Modal from "./Modal";
 import history from "../history";
 
-class ErrorModal extends React.Component {
+export default class SuccessModal extends Component {
   renderContent = () => {
     if (this.props.location.state) {
       return (
-        <div style={{ textAlign: "center" }} className="ui  negative message">
+        <div style={{ textAlign: "center" }} className="ui  positive message">
           <div className="header">
             <p>{this.props.location.state.msg}</p>
           </div>
@@ -15,8 +15,8 @@ class ErrorModal extends React.Component {
       );
     } else {
       return (
-        <div style={{ textAlign: "center" }} className="ui negative message">
-          Something went wrong.
+        <div style={{ textAlign: "center" }} className="ui positive message">
+          Successfully Done!!!
         </div>
       );
     }
@@ -24,7 +24,7 @@ class ErrorModal extends React.Component {
 
   renderActions = () => {
     return (
-      <button onClick={() => history.go(-1)} className="ui negative button">
+      <button onClick={() => history.go(-1)} className="ui positive button">
         OK
       </button>
     );
@@ -43,5 +43,3 @@ class ErrorModal extends React.Component {
     );
   }
 }
-
-export default ErrorModal;

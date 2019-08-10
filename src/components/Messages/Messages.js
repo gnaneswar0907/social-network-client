@@ -1,11 +1,18 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import LeftTab from "./Left/LeftTab";
 import FeedNavbar from "../NewsFeed/FeedNavbar";
 import MiddleTab from "./Middle/MiddleTab";
 import RightTab from "./Right/RightTab";
 
+import { fetchMessageFriends } from "../../actions/MessagesActions";
+
 class Messages extends React.Component {
+  componentDidMount() {
+    this.props.fetchMessageFriends();
+  }
+
   state = { messages: "" };
 
   renderMessages = () => {
@@ -51,4 +58,9 @@ class Messages extends React.Component {
   }
 }
 
-export default Messages;
+export default connect(
+  null,
+  {
+    fetchMessageFriends
+  }
+)(Messages);

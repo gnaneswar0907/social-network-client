@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { likePost } from "../../../actions/PostActions";
-import { posts } from "../../../urls";
+import { posts, userpage } from "../../../urls";
 import Comments from "./Comments";
 import faker from "faker";
 
@@ -27,46 +27,59 @@ class FeedItem extends Component {
     }
   };
 
+  calculateTime = () => {
+    const date1 = new Date();
+    const date2 = new Date(this.props.post.date);
+    var difference = date1.getTime() - date2.getTime();
+    var hoursDifference = Math.floor(difference / 1000 / 60 / 60);
+    var minutesDifference = Math.floor(difference / 1000 / 60);
+    var secondsDifference = Math.floor(difference / 1000);
+    var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+    if (secondsDifference > 59) {
+      if (minutesDifference > 59) {
+        if (hoursDifference > 23) {
+          return daysDifference + " days ago";
+        } else {
+          return hoursDifference + " hours ago";
+        }
+      } else {
+        return minutesDifference + " mins ago";
+      }
+    } else {
+      return secondsDifference + " secs ago";
+    }
+  };
+
   render() {
     return (
-      <Link to={`${posts}/id`} className="ui raised link fluid card">
+      <div className="ui raised fluid card">
         <div className="content">
           <div className="right floated meta date">
-            <i class="clock icon" /> 4 days ago
+            <i class="clock icon" /> {this.calculateTime()}
+            {/* {this.props.post.time} */}
           </div>
           <div className="author">
-            <img className="left floated avatar" src={faker.image.avatar()} />
-            <a className="user" style={{ paddingLeft: "5px" }}>
-              Helen Troy
-            </a>{" "}
-            added 3 new illustrations
+            <img
+              className="left floated avatar"
+              src={this.props.userdata.avatar}
+            />
+            <Link
+              to={`${userpage}/:id`}
+              className="user"
+              style={{ paddingLeft: "5px", paddingRight: "5px" }}
+            >
+              {this.props.userdata.name}
+              {/* {this.props.post.username} */}
+            </Link>
+            {"    "}
+            added a new post
+            {/* {this.props.post.heading} */}
           </div>
           <div className="meta">
             <i className="icon users" style={{ paddingLeft: "5px" }} />
           </div>
         </div>
-        <div className="content">
-          <div className="medium images" style={{ padding: "10px" }}>
-            <a>
-              <img
-                style={{ padding: "5px" }}
-                src={faker.image.people(200, 200)}
-              />
-            </a>
-            <a>
-              <img
-                style={{ padding: "5px" }}
-                src={faker.image.image(200, 200)}
-              />
-            </a>
-            <a>
-              <img
-                style={{ padding: "5px" }}
-                src={faker.image.image(200, 200)}
-              />
-            </a>
-          </div>
-        </div>
+        <div className="content">{this.props.post.text}</div>
         <div className="content">
           <span className="right floated">
             <i
@@ -74,6 +87,7 @@ class FeedItem extends Component {
               className={`${this.state.color} heart like icon`}
             />
             17 likes
+            {/* {this.props.post.likes} */}
           </span>
           <span
             onClick={() => {
@@ -83,10 +97,11 @@ class FeedItem extends Component {
             }}
           >
             <i className="comment icon" />3 comments
+            {/* {this.props.post.comments} */}
           </span>
         </div>
         {this.renderComments(this.props.post.comments, this.props.post.id)}
-      </Link>
+      </div>
     );
   }
 }

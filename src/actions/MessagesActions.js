@@ -3,9 +3,9 @@ import history from "../history";
 
 //--------Getting Message Friends List------------
 
-export const fetchMessageFriends = userid => {
+export const fetchMessageFriends = () => {
   return async dispatch => {
-    const response = await website.get(`/users/${userid}/messagefriends`);
+    const response = await website.get(`/message/users`);
     dispatch({ type: "GET_MESSAGE_FRIENDS", payload: response.data });
   };
 };

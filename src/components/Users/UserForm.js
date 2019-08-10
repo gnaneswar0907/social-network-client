@@ -1,8 +1,9 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, FieldArray } from "redux-form";
 import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css";
+import _ from "lodash";
 
 import { userDetail, userUpdate } from "../../actions/UserActions";
 
@@ -13,52 +14,71 @@ class UserFrom extends React.Component {
     this.genderRef2 = React.createRef();
     this.dobRef = React.createRef();
     this.hobbiesRef = React.createRef();
+    this.interestsRef = React.createRef();
   }
   state = { dob: null };
   componentDidMount() {
-    //this.props.userDetail(this.props.match.params.id);
+    this.props.userDetail();
   }
+
   renderErrors = ({ error, touched }) => {
     if (touched && error) {
-      return <div className="ui error message">{error}</div>;
+      return <div className="ui pointing red basic label">{error}</div>;
     }
   };
 
-  renderInput = ({ input, label, position, id, type, meta }) => {
-    const classname = `field ${meta.error && meta.touched ? "error" : ""}`;
-    if (meta.touched && meta.error) {
-      return (
+  renderSchools = ({ fields }) => {
+    return (
+      <div style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+        {fields.map((school, index) => (
+          <React.Fragment key={index}>
+            <div className="fields">
+              <Field
+                id={`school ${index + 1}`}
+                name={`${school}.${index + 1}`}
+                type="text"
+                component={this.renderInput}
+                label={`School ${index + 1}`}
+              />
+              <i
+                onClick={() => fields.remove(index)}
+                style={{ marginTop: "27px", marginLeft: "5px" }}
+                className="large close icon"
+              />
+            </div>
+          </React.Fragment>
+        ))}
         <div
-          style={{ paddingTop: "20px" }}
-          id="formpop"
-          data-tooltip={meta.error}
-          data-inverted=""
-          data-position={position}
-          className={classname}
+          className="ui labeled icon primary button"
+          onClick={() => {
+            fields.push({});
+          }}
         >
-          <div className="ui labeled input">
-            <label className="ui blue label" htmlFor={id}>
-              {label}
-            </label>
-            <input id={id} {...input} type={type} placeholder={label} />
-          </div>
+          <i className="plus icon" />
+          Add School
+        </div>
+      </div>
+    );
+  };
 
-          {/* <span className="ui inverted popup">{meta.error}</span> */}
-          {/* {this.renderErrors(meta)} */}
-        </div>
-      );
-    } else {
-      return (
-        <div style={{ paddingTop: "20px" }} className={classname}>
-          <div className="ui labeled input">
-            <label className="ui blue label" htmlFor={id}>
-              {label}
-            </label>
-            <input id={id} {...input} type={type} placeholder={label} />
+  renderInput = ({ input, label, id, type, meta }) => {
+    const disabled =
+      id == "firstName" || id == "lastName" || id == "mobile" || id == "email"
+        ? "disabled"
+        : "";
+    const classname = `field  ${meta.error && meta.touched ? "error" : ""}`;
+
+    return (
+      <div style={{ paddingTop: "20px" }} className={classname}>
+        <div className={`ui labeled ${disabled} input`}>
+          <div className="ui blue label" htmlFor={id}>
+            {label}
           </div>
+          <input id={id} {...input} type={type} placeholder={label} />
         </div>
-      );
-    }
+        {this.renderErrors(meta)}
+      </div>
+    );
   };
 
   selectDate = e => {
@@ -66,11 +86,15 @@ class UserFrom extends React.Component {
   };
 
   onSubmit = formValues => {
-    const hobbies = this.hobbiesRef.current.value.split(",");
+    // const hobbies = this.hobbiesRef.current.value.split(",");
+    // const interests = this.interestsRef.current.value.split(",");
+    const hobbies = this.hobbiesRef.current.value;
+    const interests = this.interestsRef.current.value;
     const values = {
       ...formValues,
       dob: this.dobRef.current.input.value,
-      hobbies: hobbies
+      hobbies: hobbies,
+      interests: interests
     };
 
     console.log(values);
@@ -80,11 +104,11 @@ class UserFrom extends React.Component {
     this.props.reset();
     this.genderRef1.current.checked = false;
     this.genderRef2.current.checked = false;
-    this.hobbiesRef.current.value = "";
     this.setState({ dob: null });
   };
 
   render() {
+    console.log(this.userdata);
     return (
       <form
         onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -96,7 +120,6 @@ class UserFrom extends React.Component {
             name="firstName"
             label="First Name"
             type="text"
-            position="left center"
             component={this.renderInput}
           />
           <Field
@@ -104,7 +127,6 @@ class UserFrom extends React.Component {
             name="lastName"
             label="Last Name"
             type="text"
-            position="right center"
             component={this.renderInput}
           />
         </div>
@@ -114,7 +136,6 @@ class UserFrom extends React.Component {
             name="mobile"
             label="Mobile Number"
             type="tel"
-            position="left center"
             component={this.renderInput}
           />
           <Field
@@ -122,16 +143,14 @@ class UserFrom extends React.Component {
             name="email"
             label="Email"
             type="email"
-            position="right center"
             component={this.renderInput}
           />
         </div>
-        <Field
+        {/* <Field
           id="oldpassword"
           name="oldpassword"
           type="password"
           label="Old Password"
-          position="right center"
           component={this.renderInput}
         />
 
@@ -140,42 +159,47 @@ class UserFrom extends React.Component {
           name="newpassword"
           type="password"
           label="New Password"
-          position="right center"
           component={this.renderInput}
-        />
-
-        <Field name="gender" component="radio">
-          <div style={{ paddingTop: "20px" }} className="inline fields">
-            <label className="ui blue label">Gender </label>
-            <div className="field">
-              <div className="ui radio checkbox">
-                <input
-                  id="male"
-                  ref={this.genderRef1}
-                  name="gender"
-                  type="radio"
-                  value="male"
-                />
-                <label htmlFor="male">Male</label>
-              </div>
-            </div>
-            <div className="field">
-              <div className="ui radio checkbox">
-                <input
-                  id="female"
-                  ref={this.genderRef2}
-                  type="radio"
-                  value="female"
-                  name="gender"
-                />
-                <label htmlFor="female">Female</label>
-              </div>
-            </div>
-          </div>
-        </Field>
+        /> */}
 
         <div className="fields">
-          <div style={{ paddingTop: "20px" }} className="field">
+          <Field name="gender" component="radio">
+            <div
+              style={{ paddingTop: "20px", marginLeft: "10px" }}
+              className="inline fields"
+            >
+              <div className="ui blue large label">Gender </div>
+              <div style={{ marginLeft: "20px" }} className="field">
+                <div className="ui radio checkbox">
+                  <input
+                    id="male"
+                    ref={this.genderRef1}
+                    name="gender"
+                    type="radio"
+                    value="male"
+                  />
+                  <label htmlFor="male">Male</label>
+                </div>
+              </div>
+              <div className="field">
+                <div className="ui radio checkbox">
+                  <input
+                    id="female"
+                    ref={this.genderRef2}
+                    type="radio"
+                    value="female"
+                    name="gender"
+                  />
+                  <label htmlFor="female">Female</label>
+                </div>
+              </div>
+            </div>
+          </Field>
+
+          <div
+            style={{ paddingTop: "20px", marginLeft: "250px" }}
+            className="field"
+          >
             <div className="ui labeled input">
               <label className="ui blue label">Date of Birth</label>
               <DatePicker
@@ -186,15 +210,17 @@ class UserFrom extends React.Component {
               />
             </div>
           </div>
-          <Field
-            id="school"
-            name="school"
-            label="School"
-            type="text"
-            position="left center"
-            component={this.renderInput}
-          />
+        </div>
 
+        <Field
+          id="intro"
+          name="intro"
+          label="About Yourself"
+          type="text"
+          component={this.renderInput}
+        />
+
+        <div className="two fields">
           <div style={{ paddingTop: "20px" }} className="field">
             <div className="ui labeled input">
               <label htmlFor="hobbies" className="ui blue label">
@@ -202,6 +228,7 @@ class UserFrom extends React.Component {
               </label>
               <div className="ui multiple search selection dropdown">
                 <input
+                  defaultValue=""
                   ref={this.hobbiesRef}
                   id="hobbies"
                   name="hobbies"
@@ -211,19 +238,55 @@ class UserFrom extends React.Component {
                 <div className="default text">Hobbies</div>
                 <div className="menu">
                   <div className="item" data-value="Books">
-                    Books
+                    Reading Books
                   </div>
                   <div className="item" data-value="Movies">
-                    Movies
+                    Watching Movies
                   </div>
-                  <div className="item" data-value="TV-Series">
-                    TV-Series
+                  <div className="item" data-value="Travelling">
+                    Travelling
                   </div>
                   <div className="item" data-value="Sports">
-                    Sports
+                    Playing Sports
                   </div>
-                  <div className="item" data-value="Music">
-                    Music
+                  <div className="item" data-value="Listening Music">
+                    Listening Music
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ paddingTop: "20px" }} className="field">
+            <div className="ui labeled input">
+              <label htmlFor="interests" className="ui blue label">
+                Interests
+              </label>
+              <div className="ui multiple search selection dropdown">
+                <input
+                  defaultValue=""
+                  ref={this.interestsRef}
+                  id="interests"
+                  name="interests"
+                  type="hidden"
+                />
+                <i className="dropdown icon" />
+                <div className="default text">Interests</div>
+                <div className="menu">
+                  <div className="item" data-value="Politics">
+                    Politics
+                  </div>
+                  <div className="item" data-value="Social Activities">
+                    Social Activities
+                  </div>
+                  <div className="item" data-value="Adventures">
+                    Adventures
+                  </div>
+                  <div className="item" data-value="People">
+                    People
+                  </div>
+                  <div className="item" data-value="Science and Technology">
+                    Science and Technology
                   </div>
                 </div>
               </div>
@@ -236,9 +299,10 @@ class UserFrom extends React.Component {
           name="website"
           type="url"
           label="Personal Website"
-          position="right center"
           component={this.renderInput}
         />
+
+        <FieldArray name="schools" component={this.renderSchools} />
 
         <button
           style={{ marginTop: "20px" }}
@@ -253,36 +317,67 @@ class UserFrom extends React.Component {
 
 const validate = values => {
   const errors = {};
-  const requiredFields = ["firstName", "lastName", "email", "gender"];
+  //const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const requiredFields = ["gender"];
   requiredFields.forEach(field => {
     if (!values[field]) {
-      errors[field] = "must enter a value";
+      errors[field] = "Must enter a value";
     }
   });
-  if (!values.mobile) {
-    errors.mobile = "Must enter a value";
-  } else if (values.mobile && !/^(\+98|0)?9\d{9}$/.test(values.mobile)) {
-    errors.mobile = "Invalid phone number entered";
-  }
 
-  if (!values.oldpassword) {
-    errors.oldpassword = "Must enter a value";
-  } else if (values.oldpassword.length < 7) {
-    errors.oldpassword = "Length must be greater than 7";
-  }
+  // if (values.email && !emailRegex.test(values.email)) {
+  //   errors.email = "email must be of in correct form";
+  // }
 
-  if (!values.newpassword) {
-    errors.newpassword = "Must enter a value";
-  } else if (values.newpassword.length < 7) {
-    errors.newpassword = "Length must be greater than 7";
-  }
+  // if (!values.mobile) {
+  //   errors.mobile = "Must enter a value";
+  // } else if (
+  //   values.mobile &&
+  //   !/^(\+\d{1,3}[- ]?)?\d{10}$/.test(values.mobile)
+  // ) {
+  //   errors.mobile = "Invalid phone number entered";
+  // }
 
-  if (values.firstName && !/^[a-zA-Z]*$/g.test(values.firstName)) {
-    errors.firstName = "Only Charecters and Numbers";
-  }
-  if (values.lastName && !/^[a-zA-Z]*$/g.test(values.lastName)) {
-    errors.lastName = "Only Charecters and Numbers";
-  }
+  // if (!values.oldpassword) {
+  //   errors.oldpassword = "Must enter a value";
+  // } else if (values.oldpassword.length < 7 || values.oldpassword.length > 16) {
+  //   errors.oldpassword = "Length must be between 7 and 16 characters long";
+  // } else {
+  //   var hasUpperCase = /[A-Z]/.test(values.oldpassword);
+  //   var hasLowerCase = /[a-z]/.test(values.oldpassword);
+  //   var hasNumbers = /\d/.test(values.oldpassword);
+  //   var hasNonalphas = /\W/.test(values.oldpassword);
+  //   if (hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas < 4) {
+  //     errors.oldpassword =
+  //       "Must contain a lower case letter, upper case letter, a number and a non-alphanumberic character";
+  //   }
+  // }
+
+  // if (values.newpassword.length < 7 || values.newpassword.length > 16) {
+  //   errors.newpassword = "Length must be between 7 and 16 characters long";
+  // } else {
+  //   var hasUpperCase = /[A-Z]/.test(values.newpassword);
+  //   var hasLowerCase = /[a-z]/.test(values.newpassword);
+  //   var hasNumbers = /\d/.test(values.newpassword);
+  //   var hasNonalphas = /\W/.test(values.newpassword);
+  //   if (hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas < 4) {
+  //     errors.newpassword =
+  //       "Must contain a lower case letter, upper case letter, a number and a non-alphanumberic character";
+  //   }
+  // }
+
+  // if (!values.handle) {
+  //   errors.handle = "Must enter a value";
+  // } else if (values.handle.length > 20) {
+  //   errors.handle = "Length must be less than 20";
+  // }
+
+  // if (values.firstName && !/^[a-zA-Z0-9]*$/g.test(values.firstName)) {
+  //   errors.firstName = "Only Charecters and Numbers";
+  // }
+  // if (values.lastName && !/^[a-zA-Z0-9]*$/g.test(values.lastName)) {
+  //   errors.lastName = "Only Charecters and Numbers";
+  // }
 
   return errors;
 };
@@ -292,14 +387,14 @@ const userfo = reduxForm({
   validate: validate
 })(UserFrom);
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    userDetails: this.state.users[ownProps.match.params.id]
+    userdetails: state.users
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   {
     userDetail,
     userUpdate

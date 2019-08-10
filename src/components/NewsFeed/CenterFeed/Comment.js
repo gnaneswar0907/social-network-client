@@ -16,6 +16,7 @@ export default class Comment extends Component {
           <div className="text">How artistic!</div>
           <div className="actions">
             <a className="reply">Reply</a>
+            <a>Delete</a>
           </div>
         </div>
       </div>

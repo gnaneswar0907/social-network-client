@@ -3,7 +3,7 @@ import _ from "lodash";
 export default (state = {}, action) => {
   switch (action.type) {
     case "GET_MESSAGE_FRIENDS":
-      return { ...state, ..._.mapKeys(action.payload, "id") };
+      return action.payload;
     case "GET_MESSAGES":
       return { ...state, ..._.mapKeys(action.payload, "id") };
     case "ADD_MESSAGE":

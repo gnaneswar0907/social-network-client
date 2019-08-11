@@ -19,7 +19,7 @@ export default combineReducers({
   form: reducer,
   auth: AuthReducer,
   posts: PostsReducer,
-  users: UsersReducer,
+  user: UsersReducer,
   messages: MessageReducer,
   color: changedColor
 });

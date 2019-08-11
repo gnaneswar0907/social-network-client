@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { logoutUser } from "../../actions/UserActions";
-import faker from "faker";
 import { home, userpage } from "../../urls";
 import SearchBar from "./SearchBar";
 
@@ -14,7 +13,8 @@ class FeedNavbar extends Component {
     } else {
       this.filter = "posts";
     }
-    if (this.props.userdata) {
+    if (this.props.user) {
+      const { firstName, avatar, handle } = this.props.user;
       return (
         <div className="ui blue fluid inverted secondary labeled icon top fixed menu">
           <div className="vertically fitted  item">
@@ -33,13 +33,13 @@ class FeedNavbar extends Component {
             className="vertically fitted  item"
             style={{ marginLeft: "150px" }}
           >
-            <Link to={`${userpage}/id`} className="ui blue label">
+            <Link to={`${userpage}/${handle}`} className="ui blue label">
               <img
                 className="ui avatar image"
-                src={this.props.userdata.avatar}
+                src={`data:image/jpeg;base64,${avatar}`}
                 alt="userphoto"
               />
-              {this.props.userdata.name}
+              {firstName}
             </Link>
           </div>
           <div
@@ -114,7 +114,13 @@ class FeedNavbar extends Component {
   }
 }
 
+const mapStateToProps = ({ user }) => {
+  return {
+    user: user.current
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   { logoutUser }
 )(FeedNavbar);

@@ -5,17 +5,23 @@ import history from "../history";
 
 export const createPost = formValues => {
   return async dispatch => {
-    await website.post("/posts", formValues);
-    const response = await website.get(`/posts`);
-    dispatch({ type: "CREATE_POST", payload: response.data });
+    console.log(formValues);
+    const response = await website.post("/posts", formValues, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    });
+    if (response.status === 201) {
+      dispatch({ type: "CREATE_POST", payload: response.data });
+    }
   };
 };
 
 //-------- Get User Posts ------------
 
-export const getUserPosts = () => {
+export const getUserPosts = username => {
   return async dispatch => {
-    const response = await website.get(`/posts`);
+    const response = await website.get(`/posts/${username}`);
     dispatch({ type: "GET_USER_POSTS", payload: response.data });
   };
 };
@@ -24,7 +30,11 @@ export const getUserPosts = () => {
 
 export const getPosts = () => {
   return async dispatch => {
-    const response = await website.get(`/posts`);
+    const response = await website.get(`/posts`, {
+      headers: {
+        Authorization: localStorage.getItem("jwtToken")
+      }
+    });
     dispatch({ type: "GET_POSTS", payload: response.data });
   };
 };

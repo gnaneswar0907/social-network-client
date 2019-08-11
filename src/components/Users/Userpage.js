@@ -11,49 +11,41 @@ import UserFriendsTemplate from "./UserFriends/UserFriendsTemplate";
 import UserUpdateTemplate from "./UserUpdateTemplate";
 
 import { userDetail } from "../../actions/UserActions";
-import { getUserPosts } from "../../actions/PostActions";
 
 class Userpage extends Component {
   componentDidMount() {
-    this.props.getUserPosts();
-    this.props.userDetail();
+    console.log(this.props);
+    const { username } = this.props.match.params;
+    this.props.userDetail(username);
   }
 
   renderContent = () => {
     if (this.props.content === "about") {
-      if (this.props.userdetail) {
-        return <UserAboutTemplate userdetail={this.props.userdetail} />;
-      } else {
-        return <UserAboutTemplate />;
+      if (this.props.user) {
+        return <UserAboutTemplate userDetail={this.props.user} />;
       }
     } else if (this.props.content === "photos") {
-      if (this.props.userdetail) {
-        return <UserPhotosTemplate userdetail={this.props.userdetail} />;
-      } else {
-        return <UserPhotosTemplate />;
+      if (this.props.user) {
+        return <UserPhotosTemplate userDetail={this.props.user} />;
       }
     } else if (this.props.content === "friends") {
-      if (this.props.userdetail) {
-        return <UserFriendsTemplate userdetail={this.props.userdetail} />;
-      } else {
-        return <UserFriendsTemplate />;
+      if (this.props.user) {
+        return <UserFriendsTemplate userDetail={this.props.user} />;
       }
     } else if (this.props.content === "update") {
-      if (this.props.userdetail) {
-        return <UserUpdateTemplate userdetail={this.props.userdetail} />;
-      } else {
-        return <UserUpdateTemplate />;
+      if (this.props.user) {
+        return <UserUpdateTemplate userDetail={this.props.user} />;
       }
     } else {
       return (
         <React.Fragment>
-          <div className="six wide column">
+          <div className="seven wide column">
             <div>
               <UserPageLeft />
             </div>
           </div>
-          <div className="ten wide column">
-            <UserContent posts={this.props.posts} />
+          <div className="nine wide column">
+            <UserContent username={this.props.match.params.username} />
           </div>
         </React.Fragment>
       );
@@ -61,16 +53,10 @@ class Userpage extends Component {
   };
 
   renderHeader = () => {
-    if (this.props.posts.userdata) {
+    if (this.props.user) {
       return (
         <UserHeader
-          userdata={this.props.posts.userdata}
-          button={this.props.content === "update" ? "updateform" : ""}
-        />
-      );
-    } else {
-      return (
-        <UserHeader
+          userDetail={this.props.user}
           button={this.props.content === "update" ? "updateform" : ""}
         />
       );
@@ -79,52 +65,31 @@ class Userpage extends Component {
 
   render() {
     const contentClass = this.props.content == null ? "grid" : "";
-    if (this.props.posts) {
-      return (
-        <div className="ui grid">
-          <div className="row">
-            <FeedNavbar
-              userdata={this.props.posts.userdata}
-              searchfilter="posts"
-            />
-          </div>
-          <div style={{ marginTop: "42px" }} className="ui container">
-            {this.renderHeader()}
-            <div className={`ui ${contentClass} container`}>
-              {this.renderContent()}
-            </div>
+    return (
+      <div className="ui grid">
+        <div className="row">
+          <FeedNavbar searchfilter="posts" />
+        </div>
+        <div style={{ marginTop: "42px" }} className="ui container">
+          {this.renderHeader()}
+          <div className={`ui ${contentClass} container`}>
+            {this.renderContent()}
           </div>
         </div>
-      );
-    } else {
-      return (
-        <div className="ui grid">
-          <div className="row">
-            <FeedNavbar searchfilter="posts" />
-          </div>
-          <div style={{ marginTop: "42px" }} className="ui container">
-            {this.renderHeader()}
-            <div className={`ui ${contentClass} container`}>
-              {this.renderContent()}
-            </div>
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   }
 }
 
-const mapStateToPros = state => {
+const mapStateToPros = ({ user }) => {
   return {
-    posts: state.posts,
-    userdetail: state.users
+    user: user.userDetail
   };
 };
 
 export default connect(
   mapStateToPros,
   {
-    userDetail,
-    getUserPosts
+    userDetail
   }
 )(Userpage);

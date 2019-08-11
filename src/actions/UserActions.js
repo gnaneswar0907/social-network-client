@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import server from "../api";
 import history from "../history";
 import setAuthToken from "../components/Authentication/setAuthToken";
+import { getPosts } from "./PostActions";
 
 //----------CREATING USER--------------------
 
@@ -33,12 +34,11 @@ export const userLogin = formValues => {
       });
 
     if (response) {
-      const { token } = response.data;
+      const { token, user } = response.data;
       localStorage.setItem("jwtToken", token);
       setAuthToken(token);
-      const decoded = jwt_decode(token);
-      console.log(decoded);
-      dispatch({ type: "SET_CURRENT_USER", payload: decoded });
+      dispatch({ type: "SET_AUTHENTICATION", payload: token });
+      dispatch({ type: "SET_CURRENTUSER", payload: user });
       history.push("/home");
     }
   };
@@ -49,20 +49,21 @@ export const userLogin = formValues => {
 export const logoutUser = () => {
   return async dispatch => {
     const response = await server.post("/users/logout");
-    console.log(response);
     if (response.status === 200) {
       localStorage.removeItem("jwtToken");
       setAuthToken(false);
-      dispatch({ type: "SET_CURRENT_USER", payload: {} });
+      dispatch({ type: "SET_AUTHENTICATION", payload: false });
+      dispatch({ type: "GET_POSTS", payload: [] });
+      dispatch({ type: "SET_CURRENTUSER", payload: {} });
     }
   };
 };
 
 //----------GETTING USER DETAIL--------------------
 
-export const userDetail = () => {
+export const userDetail = username => {
   return async dispatch => {
-    const response = await server.get("/profile");
+    const response = await server.get(`/users/${username}`);
     dispatch({ type: "GET_USER", payload: response.data });
   };
 };

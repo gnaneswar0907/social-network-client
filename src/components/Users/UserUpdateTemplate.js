@@ -12,7 +12,7 @@ export default class UserUpdateTemplate extends Component {
           </div>
         </div>
         <div className="ui attached segment">
-          <UserForm />
+          <UserForm userDetail={this.props.userDetail} />
         </div>
       </div>
     );

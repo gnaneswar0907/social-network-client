@@ -1,17 +1,18 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import CreatePost from "../NewsFeed/CenterFeed/CreatePost";
 import Comments from "../NewsFeed/CenterFeed/Comments";
 
-//import { getUserPosts } from "../../actions/PostActions";
+import { getUserPosts } from "../../actions/PostActions";
 import FeedItem from "../NewsFeed/CenterFeed/FeedItem";
 
 class UserContent extends Component {
   state = { hideComments: true };
 
-  // componentDidMount() {
-  //   this.props.getUserPosts();
-  // }
+  componentDidMount() {
+    this.props.getUserPosts(this.props.username);
+  }
 
   setVisibility = () => {
     if (this.state.hideComments) {
@@ -33,10 +34,11 @@ class UserContent extends Component {
     }
   };
 
-  rednerPosts = ({ posts, userdata }) => {
+  renderPosts = () => {
+    const { posts } = this.props;
     if (posts) {
       return posts.map(post => {
-        return <FeedItem post={post} userdata={userdata} />;
+        return <FeedItem post={post} />;
       });
     } else {
       return <div>No posts to display</div>;
@@ -46,17 +48,20 @@ class UserContent extends Component {
   render() {
     return (
       <div className="ui large feed">
-        <CreatePost userdetails={this.props.posts.userdata} />
-        {this.rednerPosts(this.props.posts)}
+        <CreatePost />
+        {this.renderPosts()}
       </div>
     );
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     posts: state.posts
-//   };
-// };
+const mapStateToProps = ({ posts }) => {
+  return {
+    posts
+  };
+};
 
-export default UserContent;
+export default connect(
+  mapStateToProps,
+  { getUserPosts }
+)(UserContent);

@@ -35,16 +35,20 @@ export default class UserHeader extends Component {
     }
   };
   render() {
-    if (this.props.userdata) {
+    if (this.props.userDetail) {
+      const { handle, avatar } = this.props.userDetail;
       return (
         <div className="ui segments">
           <div className="ui inverted black segment">
             <Link
-              to={`${userpage}/handle`}
+              to={`${userpage}/${handle}`}
               style={{ marginLeft: "30px" }}
               className="ui small circular image"
             >
-              <img src={this.props.userdata.avatar} alt="profilephoto" />
+              <img
+                src={`data:image/jpeg;base64,${avatar}`}
+                alt="profilephoto"
+              />
             </Link>
           </div>
           {this.renderMenu()}

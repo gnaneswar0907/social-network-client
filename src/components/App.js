@@ -20,7 +20,6 @@ import {
   userUpdate
 } from "../urls";
 import setAuthToken from "./Authentication/setAuthToken";
-import store from "../store";
 import PrivateRoute from "../PrivateRoute";
 import EntryPage from "./EntryPage";
 import HomeFeed from "./NewsFeed/HomeFeed";
@@ -36,21 +35,11 @@ import ErrorModal from "./ErrorModal";
 import UserFriends from "./Users/UserFriends/UserFriends";
 import UserAbout from "./Users/about/UserAbout";
 import UserPhotos from "./Users/UserPhotos/UserPhotos";
-import { logoutUser } from "../actions/UserActions";
 import SuccessModal from "./SuccessModal";
 import PasswordChangeModal from "./Users/PasswordChangeModal";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
-  const decoded = jwt_decode(localStorage.jwtToken);
-  store.dispatch({ type: "SET_CURRENT_USER", payload: decoded });
-
-  const currentTime = Date.now() / 1000;
-  if (decoded.exp < currentTime) {
-    store.dispatch(logoutUser());
-
-    history.push("/signup");
-  }
 }
 
 class App extends Component {
@@ -67,7 +56,11 @@ class App extends Component {
             <PrivateRoute path={about} exact component={UserAbout} />
             <PrivateRoute path={userFriends} exact component={UserFriends} />
             <PrivateRoute path={userPhotos} exact component={UserPhotos} />
-            <PrivateRoute path={userUpdate} exact component={UserUpdate} />
+            <PrivateRoute
+              path={`${userUpdate}/:username`}
+              exact
+              component={UserUpdate}
+            />
             <PrivateRoute path={findfriends} exact component={FindFriends} />
             <PrivateRoute path={profilephoto} exact component={UserDpModal} />
             <PrivateRoute
@@ -77,7 +70,11 @@ class App extends Component {
             />
             <PrivateRoute path={requests} exact component={FriendRequests} />
             <PrivateRoute path={`${posts}/:id`} exact component={SinglePost} />
-            <PrivateRoute path={`${userpage}/:id`} exact component={Userpage} />
+            <PrivateRoute
+              path={`${userpage}/:username`}
+              exact
+              component={Userpage}
+            />
           </Switch>
         </Router>
       </div>

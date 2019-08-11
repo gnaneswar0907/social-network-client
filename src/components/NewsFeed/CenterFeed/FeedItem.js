@@ -27,9 +27,9 @@ class FeedItem extends Component {
     }
   };
 
-  calculateTime = () => {
+  calculateTime = postDate => {
     const date1 = new Date();
-    const date2 = new Date(this.props.post.date);
+    const date2 = new Date(postDate);
     var difference = date1.getTime() - date2.getTime();
     var hoursDifference = Math.floor(difference / 1000 / 60 / 60);
     var minutesDifference = Math.floor(difference / 1000 / 60);
@@ -51,35 +51,40 @@ class FeedItem extends Component {
   };
 
   render() {
+    const { content, postImage, user, createdAt } = this.props.post;
+    const postHeading = postImage ? "photo" : "post";
     return (
       <div className="ui raised fluid card">
         <div className="content">
           <div className="right floated meta date">
-            <i class="clock icon" /> {this.calculateTime()}
-            {/* {this.props.post.time} */}
+            <i class="clock icon" />
+            {this.calculateTime(createdAt)}
           </div>
           <div className="author">
             <img
               className="left floated avatar"
-              src={this.props.userdata.avatar}
+              src={`data:image/jpeg;base64,${user[0].avatar}`}
             />
             <Link
-              to={`${userpage}/:id`}
+              to={`${userpage}/${user[0].handle}`}
               className="user"
-              style={{ paddingLeft: "5px", paddingRight: "5px" }}
+              style={{ paddingLeft: "5px", paddingRight: "1px" }}
             >
-              {this.props.userdata.name}
-              {/* {this.props.post.username} */}
+              {user[0].firstName}
             </Link>
             {"    "}
-            added a new post
-            {/* {this.props.post.heading} */}
+            added a new {postHeading}
           </div>
           <div className="meta">
             <i className="icon users" style={{ paddingLeft: "5px" }} />
           </div>
         </div>
-        <div className="content">{this.props.post.text}</div>
+        <div className="content">{content}</div>
+        {postImage && (
+          <div className="image">
+            <img src={`data:image/png;base64,${postImage}`} />
+          </div>
+        )}
         <div className="content">
           <span className="right floated">
             <i
@@ -100,7 +105,7 @@ class FeedItem extends Component {
             {/* {this.props.post.comments} */}
           </span>
         </div>
-        {this.renderComments(this.props.post.comments, this.props.post.id)}
+        {/* {this.renderComments(this.props.post.comments, this.props.post.id)} */}
       </div>
     );
   }

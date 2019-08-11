@@ -9,12 +9,18 @@ import requestImage from "../../../images/request.png";
 
 export default class SingleItem extends Component {
   render() {
-    if (this.props.userdata) {
+    if (this.props.user) {
+      const { firstName, lastName, avatar } = this.props.user;
       return (
         <Link to={this.props.link} className="item">
-          <img className="ui avatar image" src={this.props.userdata.avatar} />
+          <img
+            className="ui avatar image"
+            src={`data:image/png;base64,${avatar}`}
+          />
           <div className="content">
-            <div className="header">{this.props.userdata.name}</div>
+            <div className="header">
+              {firstName} {lastName}
+            </div>
           </div>
         </Link>
       );

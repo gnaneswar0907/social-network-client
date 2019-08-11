@@ -44,18 +44,21 @@ class CreatePost extends React.Component {
   };
 
   creatingPost = () => {
-    //const data = new FormData();
-    let data = {};
+    let data = new FormData();
+    // let data = {};
     if (this.state.posttext === "") {
       return;
     } else {
       if (this.state.file === "") {
-        data = { content: this.state.posttext };
+        // data = { content: this.state.posttext };
+        data.append("content", this.state.posttext);
       } else {
-        data = {
-          content: this.state.posttext,
-          file: this.fileRef.current.files[0]
-        };
+        // data = {
+        //   content: this.state.posttext,
+        //   file: this.fileRef.current.files[0]
+        // };
+        data.append("content", this.state.posttext);
+        data.append("file", this.fileRef.current.files[0]);
       }
 
       this.props.createPost(data);
@@ -64,8 +67,8 @@ class CreatePost extends React.Component {
   };
 
   render() {
-    const user = this.props.userdetails;
-    if (user) {
+    const { avatar } = this.props.user;
+    if (avatar) {
       return (
         <div className="ui fluid card">
           <div className="content">
@@ -76,7 +79,7 @@ class CreatePost extends React.Component {
 
           <div className="content">
             <div className="left floated ui  image avatar">
-              <img src={user.avatar} />
+              <img src={`data:image/jpeg;base64,${avatar}`} />
             </div>
             <div className="ui fluid transparent input">
               <input
@@ -136,7 +139,6 @@ class CreatePost extends React.Component {
               <div className="ui placeholder">
                 <div className="ui avatar image" />
               </div>
-              {/* <img src="" alt="userdp" /> */}
             </div>
             <div className="ui fluid transparent input">
               <input
@@ -186,8 +188,14 @@ class CreatePost extends React.Component {
   }
 }
 
+const mapStateToProps = ({ user }) => {
+  return {
+    user: user.current
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   {
     createPost
   }
